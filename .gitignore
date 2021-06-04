@@ -4,3 +4,7 @@
 *.o
 *.xlsx
 *.bat
+*.docx
+/docs
+/saturday
+/tests
