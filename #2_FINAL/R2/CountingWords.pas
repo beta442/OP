@@ -2,17 +2,17 @@ UNIT CountingWords;
 
 INTERFACE      
        
-PROCEDURE CountWord(Word: STRING);                                              { Вставляет слово Word в бинарное дерево }
-PROCEDURE PrintFileStatistic(VAR DataFile: TEXT);                               { Печать содержимого дерева }
+PROCEDURE CountWord(Word: STRING);                                              { Г‚Г±ГІГ ГўГ«ГїГҐГІ Г±Г«Г®ГўГ® Word Гў ГЎГЁГ­Г Г°Г­Г®ГҐ Г¤ГҐГ°ГҐГўГ® }
+PROCEDURE PrintFileStatistic(VAR DataFile: TEXT);                               { ГЏГҐГ·Г ГІГј Г±Г®Г¤ГҐГ°Г¦ГЁГ¬Г®ГЈГ® Г¤ГҐГ°ГҐГўГ  }
 
 IMPLEMENTATION
 
 TYPE
   Tree = ^Node;
   Node = RECORD
-           Word: STRING;      //поле ячейки, содержит в себе слово-символы
-           Counter: INTEGER;  //счётчик, показывает, кол-во одинаково обработанных Word при вставке в дерево
-           Left, Right: Tree  //указатели в бинарном дереве         
+           Word: STRING;      //ГЇГ®Г«ГҐ ГїГ·ГҐГ©ГЄГЁ, Г±Г®Г¤ГҐГ°Г¦ГЁГІ Гў Г±ГҐГЎГҐ Г±Г«Г®ГўГ®-Г±ГЁГ¬ГўГ®Г«Г»
+           Counter: INTEGER;  //Г±Г·ВёГІГ·ГЁГЄ, ГЇГ®ГЄГ Г§Г»ГўГ ГҐГІ, ГЄГ®Г«-ГўГ® Г®Г¤ГЁГ­Г ГЄГ®ГўГ® Г®ГЎГ°Г ГЎГ®ГІГ Г­Г­Г»Гµ Word ГЇГ°ГЁ ГўГ±ГІГ ГўГЄГҐ Гў Г¤ГҐГ°ГҐГўГ®
+           Left, Right: Tree  //ГіГЄГ Г§Г ГІГҐГ«ГЁ Гў ГЎГЁГ­Г Г°Г­Г®Г¬ Г¤ГҐГ°ГҐГўГҐ         
          END;
             
   TempNode = RECORD
@@ -21,17 +21,17 @@ TYPE
              END;
   NodeFile = FILE OF TempNode; 
 
-{ Реализовано бинарным деревом, с контролем по памяти  }
+{ ГђГҐГ Г«ГЁГ§Г®ГўГ Г­Г® ГЎГЁГ­Г Г°Г­Г»Г¬ Г¤ГҐГ°ГҐГўГ®Г¬, Г± ГЄГ®Г­ГІГ°Г®Г«ГҐГ¬ ГЇГ® ГЇГ Г¬ГїГІГЁ  }
          
 VAR
   WordAmount: INTEGER;
   Root: Tree;
-  HasOverflow, TreeSaved: BOOLEAN; //HasOverflow - имеет ли переполнение на данный момент, TreeSaved - дерево хоть раз было сохранено
+  HasOverflow, TreeSaved: BOOLEAN; //HasOverflow - ГЁГ¬ГҐГҐГІ Г«ГЁ ГЇГҐГ°ГҐГЇГ®Г«Г­ГҐГ­ГЁГҐ Г­Г  Г¤Г Г­Г­Г»Г© Г¬Г®Г¬ГҐГ­ГІ, TreeSaved - Г¤ГҐГ°ГҐГўГ® ГµГ®ГІГј Г°Г Г§ ГЎГ»Г«Г® Г±Г®ГµГ°Г Г­ГҐГ­Г®
 
 PROCEDURE WriteTempFile(VAR TempFile: NodeFile);
-{ Имеется типизированный файл, состоящий из двух полей:
-  поле1: слово-строка, поле2: счётчик(кол-во слов)
-  Процедура печатает этот файл в OUTPUT }
+{ Г€Г¬ГҐГҐГІГ±Гї ГІГЁГЇГЁГ§ГЁГ°Г®ГўГ Г­Г­Г»Г© ГґГ Г©Г«, Г±Г®Г±ГІГ®ГїГ№ГЁГ© ГЁГ§ Г¤ГўГіГµ ГЇГ®Г«ГҐГ©:
+  ГЇГ®Г«ГҐ1: Г±Г«Г®ГўГ®-Г±ГІГ°Г®ГЄГ , ГЇГ®Г«ГҐ2: Г±Г·ВёГІГ·ГЁГЄ(ГЄГ®Г«-ГўГ® Г±Г«Г®Гў)
+  ГЏГ°Г®Г¶ГҐГ¤ГіГ°Г  ГЇГҐГ·Г ГІГ ГҐГІ ГЅГІГ®ГІ ГґГ Г©Г« Гў OUTPUT }
 VAR
   Temp: TempNode;
 BEGIN
@@ -45,7 +45,7 @@ BEGIN
 END;
 
 PROCEDURE SaveTreeIntoFile(VAR Pointer: Tree; VAR TreeHolder: NodeFile);
-{ Пройди по всем элементам дерева и сохрани их в TreeHolder }
+{ ГЏГ°Г®Г©Г¤ГЁ ГЇГ® ГўГ±ГҐГ¬ ГЅГ«ГҐГ¬ГҐГ­ГІГ Г¬ Г¤ГҐГ°ГҐГўГ  ГЁ Г±Г®ГµГ°Г Г­ГЁ ГЁГµ Гў TreeHolder }
 VAR
   SavedNode: TempNode;
 BEGIN { SaveTree }
@@ -53,10 +53,10 @@ BEGIN { SaveTree }
   THEN
     BEGIN
       SaveTreeIntoFile(Pointer^.Left, TreeHolder);
-      //подготовим контейнер SavedNode
+      //ГЇГ®Г¤ГЈГ®ГІГ®ГўГЁГ¬ ГЄГ®Г­ГІГҐГ©Г­ГҐГ° SavedNode
       SavedNode.Word := Pointer^.Word;
       SavedNode.Counter := Pointer^.Counter;
-      //который сохраним в типизированном файле TreeHolder
+      //ГЄГ®ГІГ®Г°Г»Г© Г±Г®ГµГ°Г Г­ГЁГ¬ Гў ГІГЁГЇГЁГ§ГЁГ°Г®ГўГ Г­Г­Г®Г¬ ГґГ Г©Г«ГҐ TreeHolder
       WRITE(TreeHolder, SavedNode);
       
       SaveTreeIntoFile(Pointer^.Right, TreeHolder)
@@ -64,17 +64,17 @@ BEGIN { SaveTree }
 END; { SaveTree }
 
 PROCEDURE MergeTreeBackUpWithHistory(VAR BackUpFile, HistoryFile: NodeFile);
-{ Самая жёсткая процедура, имеются два файла - бэкап дерева и история работы
-  дерева - то, что было в нём, если уже происходили сбросы дерева из оперативки }
+{ Г‘Г Г¬Г Гї Г¦ВёГ±ГІГЄГ Гї ГЇГ°Г®Г¶ГҐГ¤ГіГ°Г , ГЁГ¬ГҐГѕГІГ±Гї Г¤ГўГ  ГґГ Г©Г«Г  - ГЎГЅГЄГ ГЇ Г¤ГҐГ°ГҐГўГ  ГЁ ГЁГ±ГІГ®Г°ГЁГї Г°Г ГЎГ®ГІГ»
+  Г¤ГҐГ°ГҐГўГ  - ГІГ®, Г·ГІГ® ГЎГ»Г«Г® Гў Г­ВёГ¬, ГҐГ±Г«ГЁ ГіГ¦ГҐ ГЇГ°Г®ГЁГ±ГµГ®Г¤ГЁГ«ГЁ Г±ГЎГ°Г®Г±Г» Г¤ГҐГ°ГҐГўГ  ГЁГ§ Г®ГЇГҐГ°Г ГІГЁГўГЄГЁ }
 VAR
-  Temp1, Temp2: TempNode;  //с помощью этих ячеек будем тасовать файлы
-  TempFile: NodeFile;      //файл, куда временно скопируем содержимое HistoryFile
-  HasInsert: BOOLEAN;      //очень крутой флаг! контроллируем вставку
+  Temp1, Temp2: TempNode;  //Г± ГЇГ®Г¬Г®Г№ГјГѕ ГЅГІГЁГµ ГїГ·ГҐГҐГЄ ГЎГіГ¤ГҐГ¬ ГІГ Г±Г®ГўГ ГІГј ГґГ Г©Г«Г»
+  TempFile: NodeFile;      //ГґГ Г©Г«, ГЄГіГ¤Г  ГўГ°ГҐГ¬ГҐГ­Г­Г® Г±ГЄГ®ГЇГЁГ°ГіГҐГ¬ Г±Г®Г¤ГҐГ°Г¦ГЁГ¬Г®ГҐ HistoryFile
+  HasInsert: BOOLEAN;      //Г®Г·ГҐГ­Гј ГЄГ°ГіГІГ®Г© ГґГ«Г ГЈ! ГЄГ®Г­ГІГ°Г®Г«Г«ГЁГ°ГіГҐГ¬ ГўГ±ГІГ ГўГЄГі
 BEGIN { MergeTreeBackUpWithHistory }
   REWRITE(TempFile);
   RESET(HistoryFile);
   
-  //ну тут понятно - просто сохранили историю в TempFile
+  //Г­Гі ГІГіГІ ГЇГ®Г­ГїГІГ­Г® - ГЇГ°Г®Г±ГІГ® Г±Г®ГµГ°Г Г­ГЁГ«ГЁ ГЁГ±ГІГ®Г°ГЁГѕ Гў TempFile
   WHILE NOT EOF(HistoryFile)
   DO
     BEGIN
@@ -87,7 +87,7 @@ BEGIN { MergeTreeBackUpWithHistory }
   RESET(BackUpFile);
   
 
-  //готовим наши файлы TempFile, BackUpFile для merge в HistoryFile
+  //ГЈГ®ГІГ®ГўГЁГ¬ Г­Г ГёГЁ ГґГ Г©Г«Г» TempFile, BackUpFile Г¤Г«Гї merge Гў HistoryFile
   WHILE NOT EOF(BackUpFile)
   DO
     BEGIN
@@ -98,8 +98,8 @@ BEGIN { MergeTreeBackUpWithHistory }
         BEGIN
           READ(TempFile, Temp1);
           
-          //просто листаем TempFile, транслируюя его в History, т.к. не нашли место для вставки
-          //обратите внимание, здесь не активируется флаг вставки!!! (логично)
+          //ГЇГ°Г®Г±ГІГ® Г«ГЁГ±ГІГ ГҐГ¬ TempFile, ГІГ°Г Г­Г±Г«ГЁГ°ГіГѕГї ГҐГЈГ® Гў History, ГІ.ГЄ. Г­ГҐ Г­Г ГёГ«ГЁ Г¬ГҐГ±ГІГ® Г¤Г«Гї ГўГ±ГІГ ГўГЄГЁ
+          //Г®ГЎГ°Г ГІГЁГІГҐ ГўГ­ГЁГ¬Г Г­ГЁГҐ, Г§Г¤ГҐГ±Гј Г­ГҐ Г ГЄГІГЁГўГЁГ°ГіГҐГІГ±Гї ГґГ«Г ГЈ ГўГ±ГІГ ГўГЄГЁ!!! (Г«Г®ГЈГЁГ·Г­Г®)
           IF Temp1.Word < Temp2.Word
           THEN
             BEGIN
@@ -108,7 +108,7 @@ BEGIN { MergeTreeBackUpWithHistory }
               CONTINUE
             END;  
           
-          //наша остановочка, складываем счётчики, поступивший из дерева и уже лежавший в "системе"
+          //Г­Г ГёГ  Г®Г±ГІГ Г­Г®ГўГ®Г·ГЄГ , Г±ГЄГ«Г Г¤Г»ГўГ ГҐГ¬ Г±Г·ВёГІГ·ГЁГЄГЁ, ГЇГ®Г±ГІГіГЇГЁГўГёГЁГ© ГЁГ§ Г¤ГҐГ°ГҐГўГ  ГЁ ГіГ¦ГҐ Г«ГҐГ¦Г ГўГёГЁГ© Гў "Г±ГЁГ±ГІГҐГ¬ГҐ"
           IF Temp1.Word = Temp2.Word
           THEN
             BEGIN
@@ -119,7 +119,7 @@ BEGIN { MergeTreeBackUpWithHistory }
               BREAK
             END;
           
-          //не нашли такого слова в системе, но нашли место для вставки
+          //Г­ГҐ Г­Г ГёГ«ГЁ ГІГ ГЄГ®ГЈГ® Г±Г«Г®ГўГ  Гў Г±ГЁГ±ГІГҐГ¬ГҐ, Г­Г® Г­Г ГёГ«ГЁ Г¬ГҐГ±ГІГ® Г¤Г«Гї ГўГ±ГІГ ГўГЄГЁ
           IF Temp1.Word > Temp2.Word
           THEN
             BEGIN
@@ -129,17 +129,17 @@ BEGIN { MergeTreeBackUpWithHistory }
               BREAK
             END;
           
-          //самое интересное - два ниних условия, по сути допечатать то, что не прошло по верхним условиям
+          //Г±Г Г¬Г®ГҐ ГЁГ­ГІГҐГ°ГҐГ±Г­Г®ГҐ - Г¤ГўГ  Г­ГЁГ­ГЁГµ ГіГ±Г«Г®ГўГЁГї, ГЇГ® Г±ГіГІГЁ Г¤Г®ГЇГҐГ·Г ГІГ ГІГј ГІГ®, Г·ГІГ® Г­ГҐ ГЇГ°Г®ГёГ«Г® ГЇГ® ГўГҐГ°ГµГ­ГЁГ¬ ГіГ±Г«Г®ГўГЁГїГ¬
           IF EOF(TempFile) THEN WRITE(HistoryFile, Temp2)
               
         END; 
       
-      //представьте 3 файла, два из которых вы merge в третий, это нужно просто смочь представить
+      //ГЇГ°ГҐГ¤Г±ГІГ ГўГјГІГҐ 3 ГґГ Г©Г«Г , Г¤ГўГ  ГЁГ§ ГЄГ®ГІГ®Г°Г»Гµ ГўГ» merge Гў ГІГ°ГҐГІГЁГ©, ГЅГІГ® Г­ГіГ¦Г­Г® ГЇГ°Г®Г±ГІГ® Г±Г¬Г®Г·Гј ГЇГ°ГҐГ¤Г±ГІГ ГўГЁГІГј
       IF NOT HasInsert THEN WRITE(HistoryFile, Temp2)
       
     END;         
 
-  //оставил отладочные команды :) разкомментируйте и увидите логи работы merge
+  //Г®Г±ГІГ ГўГЁГ« Г®ГІГ«Г Г¤Г®Г·Г­Г»ГҐ ГЄГ®Г¬Г Г­Г¤Г» :) Г°Г Г§ГЄГ®Г¬Г¬ГҐГ­ГІГЁГ°ГіГ©ГІГҐ ГЁ ГіГўГЁГ¤ГЁГІГҐ Г«Г®ГЈГЁ Г°Г ГЎГ®ГІГ» merge
 
   {WRITELN;
   WriteTempFile(TempFile);
@@ -152,12 +152,12 @@ BEGIN { MergeTreeBackUpWithHistory }
   WRITELN('History - after insertion');
   WRITELN;}
 
-  //и конечно же удалаем наш бекап дерева, ибо уже соранили его         
+  //ГЁ ГЄГ®Г­ГҐГ·Г­Г® Г¦ГҐ ГіГ¤Г Г«Г ГҐГ¬ Г­Г Гё ГЎГҐГЄГ ГЇ Г¤ГҐГ°ГҐГўГ , ГЁГЎГ® ГіГ¦ГҐ Г±Г®Г°Г Г­ГЁГ«ГЁ ГҐГЈГ®         
   REWRITE(BackUpFile)  
 END; { MergeTreeBackUpWithHistory }
 
 PROCEDURE EmptyTree(VAR Pointer: Tree);
-{ Используй для полного уничтожения дерева  }
+{ Г€Г±ГЇГ®Г«ГјГ§ГіГ© Г¤Г«Гї ГЇГ®Г«Г­Г®ГЈГ® ГіГ­ГЁГ·ГІГ®Г¦ГҐГ­ГЁГї Г¤ГҐГ°ГҐГўГ   }
 BEGIN { EmptyTree }
   IF Pointer <> NIL
   THEN
@@ -177,9 +177,9 @@ CONST
   MaxWordAmount = 20000;
 
 PROCEDURE Insert(VAR Pointer: Tree; Word: STRING);
-{ Кладёт слово в бинарное дерево, реализован контроль переполнения }
+{ ГЉГ«Г Г¤ВёГІ Г±Г«Г®ГўГ® Гў ГЎГЁГ­Г Г°Г­Г®ГҐ Г¤ГҐГ°ГҐГўГ®, Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­ ГЄГ®Г­ГІГ°Г®Г«Гј ГЇГҐГ°ГҐГЇГ®Г«Г­ГҐГ­ГЁГї }
 
-//Требуется знать устройтсво бинарного дерева!//
+//Г’Г°ГҐГЎГіГҐГІГ±Гї Г§Г­Г ГІГј ГіГ±ГІГ°Г®Г©ГІГ±ГўГ® ГЎГЁГ­Г Г°Г­Г®ГЈГ® Г¤ГҐГ°ГҐГўГ !//
 
 BEGIN { Insert }
   IF Pointer = NIL
@@ -202,9 +202,9 @@ BEGIN { Insert }
       THEN     
         Insert(Pointer^.Right, Word);
     
-      { Слово уже есть в дереве? 
-        Тогда просто увеличить счётчик на 1, 
-        без вставки в дерево }        
+      { Г‘Г«Г®ГўГ® ГіГ¦ГҐ ГҐГ±ГІГј Гў Г¤ГҐГ°ГҐГўГҐ? 
+        Г’Г®ГЈГ¤Г  ГЇГ°Г®Г±ГІГ® ГіГўГҐГ«ГЁГ·ГЁГІГј Г±Г·ВёГІГ·ГЁГЄ Г­Г  1, 
+        ГЎГҐГ§ ГўГ±ГІГ ГўГЄГЁ Гў Г¤ГҐГ°ГҐГўГ® }        
       IF Pointer^.Word = Word
       THEN
         Pointer^.Counter := Pointer^.Counter + 1
@@ -215,8 +215,8 @@ CONST
   MaxWordSize = 50;
 
 PROCEDURE WriteWordWithStatistic(VAR StatisticFile: TEXT; VAR Pointer: Tree);
-{ Берёт ячейку из оперативной памяти и отформатированно печатает
-  её содеримое в файл StatisticFile }
+{ ГЃГҐГ°ВёГІ ГїГ·ГҐГ©ГЄГі ГЁГ§ Г®ГЇГҐГ°Г ГІГЁГўГ­Г®Г© ГЇГ Г¬ГїГІГЁ ГЁ Г®ГІГґГ®Г°Г¬Г ГІГЁГ°Г®ГўГ Г­Г­Г® ГЇГҐГ·Г ГІГ ГҐГІ
+  ГҐВё Г±Г®Г¤ГҐГ°ГЁГ¬Г®ГҐ Гў ГґГ Г©Г« StatisticFile }
 VAR
   BlankSize: INTEGER;
 BEGIN { WriteWordWithStatistic }
@@ -237,9 +237,9 @@ BEGIN { WriteWordWithStatistic }
 END; { WriteWordWithStatistic }
 
 PROCEDURE WriteSavedTreeTempFile(VAR StatisticFile: TEXT; VAR DataFile: NodeFile);
-{ Тоже самое, что и предыдущая процедура, но работа уже с постоянной памятью
-  Не делал функцию, возвращающую отформатированную строку, потому что
-  в строке 255 символов, а вдруг попадётся большое слово и не отобразится счётчик? }
+{ Г’Г®Г¦ГҐ Г±Г Г¬Г®ГҐ, Г·ГІГ® ГЁ ГЇГ°ГҐГ¤Г»Г¤ГіГ№Г Гї ГЇГ°Г®Г¶ГҐГ¤ГіГ°Г , Г­Г® Г°Г ГЎГ®ГІГ  ГіГ¦ГҐ Г± ГЇГ®Г±ГІГ®ГїГ­Г­Г®Г© ГЇГ Г¬ГїГІГјГѕ
+  ГЌГҐ Г¤ГҐГ«Г Г« ГґГіГ­ГЄГ¶ГЁГѕ, ГўГ®Г§ГўГ°Г Г№Г ГѕГ№ГіГѕ Г®ГІГґГ®Г°Г¬Г ГІГЁГ°Г®ГўГ Г­Г­ГіГѕ Г±ГІГ°Г®ГЄГі, ГЇГ®ГІГ®Г¬Гі Г·ГІГ®
+  Гў Г±ГІГ°Г®ГЄГҐ 255 Г±ГЁГ¬ГўГ®Г«Г®Гў, Г  ГўГ¤Г°ГіГЈ ГЇГ®ГЇГ Г¤ВёГІГ±Гї ГЎГ®Г«ГјГёГ®ГҐ Г±Г«Г®ГўГ® ГЁ Г­ГҐ Г®ГІГ®ГЎГ°Г Г§ГЁГІГ±Гї Г±Г·ВёГІГ·ГЁГЄ? }
 VAR
   BlankSize: INTEGER;
   Temp: TempNode;
@@ -268,14 +268,14 @@ BEGIN { WriteSavedTreeTempFile }
 END; { WriteSavedTreeTempFile }
 
 PROCEDURE PrintTree(Pointer: Tree; VAR DataFile: TEXT);
-{ Печать бинарного дерева }
+{ ГЏГҐГ·Г ГІГј ГЎГЁГ­Г Г°Г­Г®ГЈГ® Г¤ГҐГ°ГҐГўГ  }
 BEGIN { PrintTree }
   IF Pointer <> NIL
   THEN
     BEGIN
       PrintTree(Pointer^.Left, DataFile);
-      { Pointer^.Word = '' - пробел, если хочешь отобразить 
-        кол-во пробелов в тексте - убери условие }
+      { Pointer^.Word = '' - ГЇГ°Г®ГЎГҐГ«, ГҐГ±Г«ГЁ ГµГ®Г·ГҐГёГј Г®ГІГ®ГЎГ°Г Г§ГЁГІГј 
+        ГЄГ®Г«-ГўГ® ГЇГ°Г®ГЎГҐГ«Г®Гў Гў ГІГҐГЄГ±ГІГҐ - ГіГЎГҐГ°ГЁ ГіГ±Г«Г®ГўГЁГҐ }
       IF Pointer^.Word <> ''
       THEN 
         WriteWordWithStatistic(DataFile, Pointer);
@@ -286,32 +286,37 @@ END; { PrintTree }
 
 PROCEDURE CountWord(Word: STRING);
 BEGIN { CountWord }
-  IF WordAmount < MaxWordAmount    //будем делать вставку, пока есть место в оперативке
+  IF WordAmount < MaxWordAmount    //ГЎГіГ¤ГҐГ¬ Г¤ГҐГ«Г ГІГј ГўГ±ГІГ ГўГЄГі, ГЇГ®ГЄГ  ГҐГ±ГІГј Г¬ГҐГ±ГІГ® Гў Г®ГЇГҐГ°Г ГІГЁГўГЄГҐ
   THEN
     Insert(Root, Word)
   ELSE
-    BEGIN  //контроль переполнения
-      Insert(Root, Word);          //нужно довставить то, что не вместилось   
+    BEGIN  //ГЄГ®Г­ГІГ°Г®Г«Гј ГЇГҐГ°ГҐГЇГ®Г«Г­ГҐГ­ГЁГї
+      Insert(Root, Word);          //Г­ГіГ¦Г­Г® Г¤Г®ГўГ±ГІГ ГўГЁГІГј ГІГ®, Г·ГІГ® Г­ГҐ ГўГ¬ГҐГ±ГІГЁГ«Г®Г±Гј   
       HasOverflow := TRUE;         
-      SaveTreeIntoFile(Root, CurrentTreeBackUp); //оттранслирем содержимое дерева в типизированный файл
+      SaveTreeIntoFile(Root, CurrentTreeBackUp); //Г®ГІГІГ°Г Г­Г±Г«ГЁГ°ГҐГ¬ Г±Г®Г¤ГҐГ°Г¦ГЁГ¬Г®ГҐ Г¤ГҐГ°ГҐГўГ  Гў ГІГЁГЇГЁГ§ГЁГ°Г®ГўГ Г­Г­Г»Г© ГґГ Г©Г«
       TreeSaved := TRUE;
-      EmptyTree(Root)                            //уничтожим дерево
+      EmptyTree(Root)                            //ГіГ­ГЁГ·ГІГ®Г¦ГЁГ¬ Г¤ГҐГ°ГҐГўГ®
     END;
   IF HasOverflow
   THEN
     BEGIN
-      MergeTreeBackUpWithHistory(CurrentTreeBackUp, TreeHistory);  //по наличию переполнения единожды сливаем данные в файл-истории
+      MergeTreeBackUpWithHistory(CurrentTreeBackUp, TreeHistory);  //ГЇГ® Г­Г Г«ГЁГ·ГЁГѕ ГЇГҐГ°ГҐГЇГ®Г«Г­ГҐГ­ГЁГї ГҐГ¤ГЁГ­Г®Г¦Г¤Г» Г±Г«ГЁГўГ ГҐГ¬ Г¤Г Г­Г­Г»ГҐ Гў ГґГ Г©Г«-ГЁГ±ГІГ®Г°ГЁГЁ
       HasOverflow := FALSE
     END      
 END; { CountWord }
 
 PROCEDURE PrintFileStatistic(VAR DataFile: TEXT);
-{ Печать итогового файла статистики }
+{ ГЏГҐГ·Г ГІГј ГЁГІГ®ГЈГ®ГўГ®ГЈГ® ГґГ Г©Г«Г  Г±ГІГ ГІГЁГ±ГІГЁГЄГЁ }
 BEGIN { PrintFileStatistic }
-  IF TreeSaved //значит предстоит работа с типизированными файлами
+  IF TreeSaved //Г§Г­Г Г·ГЁГІ ГЇГ°ГҐГ¤Г±ГІГ®ГЁГІ Г°Г ГЎГ®ГІГ  Г± ГІГЁГЇГЁГ§ГЁГ°Г®ГўГ Г­Г­Г»Г¬ГЁ ГґГ Г©Г«Г Г¬ГЁ
   THEN
-    WriteSavedTreeTempFile(DataFile, TreeHistory)
-  ELSE        //значит просто оттранслируем содержимое дерево, обойдя его, в файл
+    BEGIN
+      //save lefted stuff
+      SaveTreeIntoFile(Root, CurrentTreeBackUp);                                         
+      MergeTreeBackUpWithHistory(CurrentTreeBackUp, TreeHistory);
+      WriteSavedTreeTempFile(DataFile, TreeHistory)
+    END  
+  ELSE        //Г§Г­Г Г·ГЁГІ ГЇГ°Г®Г±ГІГ® Г®ГІГІГ°Г Г­Г±Г«ГЁГ°ГіГҐГ¬ Г±Г®Г¤ГҐГ°Г¦ГЁГ¬Г®ГҐ Г¤ГҐГ°ГҐГўГ®, Г®ГЎГ®Г©Г¤Гї ГҐГЈГ®, Гў ГґГ Г©Г«
     PrintTree(Root, DataFile)
 END; { PrintFileStatistic }
   
@@ -320,8 +325,8 @@ BEGIN { InsertTree }
   HasOverflow := FALSE;
   TreeSaved := FALSE;
   Root := NIL;                              
-  ASSIGN(CurrentTreeBackUp, '~Temp1.txt'); //файл будет временно содержать в себе бэкап дерева в момент переполнения, после уничтожения дерева
+  ASSIGN(CurrentTreeBackUp, '~Temp1.txt'); //ГґГ Г©Г« ГЎГіГ¤ГҐГІ ГўГ°ГҐГ¬ГҐГ­Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј Гў Г±ГҐГЎГҐ ГЎГЅГЄГ ГЇ Г¤ГҐГ°ГҐГўГ  Гў Г¬Г®Г¬ГҐГ­ГІ ГЇГҐГ°ГҐГЇГ®Г«Г­ГҐГ­ГЁГї, ГЇГ®Г±Г«ГҐ ГіГ­ГЁГ·ГІГ®Г¦ГҐГ­ГЁГї Г¤ГҐГ°ГҐГўГ 
   REWRITE(CurrentTreeBackUp);
-  ASSIGN(TreeHistory, '~Temp2.txt');//файл будет временно (почему так? я не понял. идея была в том, чтобы иметь доступ к этим файлам в любое время)
-  REWRITE(TreeHistory)              //            содержать историю работы дерева (ну, бекап удаляется понятно почему, но почему нет истории???)
+  ASSIGN(TreeHistory, '~Temp2.txt');//ГґГ Г©Г« ГЎГіГ¤ГҐГІ ГўГ°ГҐГ¬ГҐГ­Г­Г® (ГЇГ®Г·ГҐГ¬Гі ГІГ ГЄ? Гї Г­ГҐ ГЇГ®Г­ГїГ«. ГЁГ¤ГҐГї ГЎГ»Г«Г  Гў ГІГ®Г¬, Г·ГІГ®ГЎГ» ГЁГ¬ГҐГІГј Г¤Г®Г±ГІГіГЇ ГЄ ГЅГІГЁГ¬ ГґГ Г©Г«Г Г¬ Гў Г«ГѕГЎГ®ГҐ ГўГ°ГҐГ¬Гї)
+  REWRITE(TreeHistory)              //            Г±Г®Г¤ГҐГ°Г¦Г ГІГј ГЁГ±ГІГ®Г°ГЁГѕ Г°Г ГЎГ®ГІГ» Г¤ГҐГ°ГҐГўГ  (Г­Гі, ГЎГҐГЄГ ГЇ ГіГ¤Г Г«ГїГҐГІГ±Гї ГЇГ®Г­ГїГІГ­Г® ГЇГ®Г·ГҐГ¬Гі, Г­Г® ГЇГ®Г·ГҐГ¬Гі Г­ГҐГІ ГЁГ±ГІГ®Г°ГЁГЁ???)
 END. { InsertTree }
